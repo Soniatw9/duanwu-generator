@@ -205,6 +205,17 @@
         }
         .cloud-left { top: 35%; left: 25px; width: 90px; }
         .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
+
+        /* FortVax Logo 樣式設定 */
+        #company-logo {
+            position: absolute; 
+            bottom: 30px;       /* 距離底部距離，可微調 */
+            right: 35px;        /* 距離右側距離，可微調 */
+            width: 110px;       /* 調整 Logo 大小，維持質感不搶主視覺 */
+            height: auto;       
+            z-index: 10;        
+            opacity: 0.9;       /* 微微透明度，更好地融入深色背景 */
+        }
     </style>
 </head>
 <body>
@@ -303,6 +314,8 @@
                 <div class="display-sender" id="target-sender">FortVax AI 團隊 敬賀</div>
                 <div class="display-logo-text" id="target-logo-text">SOVEREIGN AI & COMPLIANCE SOLUTIONS</div>
             </div>
+
+            <img id="company-logo" src="./logo.png" alt="FortVax Logo">
 
         </div>
     </div>
