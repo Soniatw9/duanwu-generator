@@ -192,12 +192,12 @@
             margin-bottom: 12px;
         }
 
-        /* 優化後的底部宣告文字樣式 */
+        /* 底部宣告文字樣式優化：因為字串變短，微調字距讓其更大氣開闊 */
         .display-logo-text {
-            font-size: 0.65rem; /* 稍微縮小字體以容納較長的英文 */
-            color: rgba(186, 202, 223, 0.55);
-            letter-spacing: 1.5px; /* 縮小字距確保不折行 */
-            text-transform: uppercase; /* 全部轉換為大寫更具專業感 */
+            font-size: 0.7rem; 
+            color: rgba(186, 202, 223, 0.6);
+            letter-spacing: 2.5px; /* 增加字距讓排版更平穩有氣度 */
+            text-transform: uppercase; 
         }
 
         /* 傳統祥雲背景裝飾 */
@@ -248,7 +248,7 @@
 
         <div class="input-group">
             <label for="input-logo-text">Footer Text / Declaration</label>
-            <input type="text" id="input-logo-text" value="FortVax under Taiwan Numerical Powers Co., Ltd. (Stock Code: 7781)">
+            <input type="text" id="input-logo-text" value="FortVax under Taiwan Numerical Powers Co., Ltd. (6593)">
         </div>
 
         <button class="btn-download" onclick="downloadPoster()">💾 Download PNG</button>
@@ -315,7 +315,7 @@
 
             <div class="footer-section">
                 <div class="display-sender" id="target-sender">FortVax Sonia 敬賀</div>
-                <div class="display-logo-text" id="target-logo-text">FORTVAX UNDER TAIWAN NUMERICAL POWERS CO., LTD. (STOCK CODE: 7781)</div>
+                <div class="display-logo-text" id="target-logo-text">FORTVAX UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</div>
             </div>
 
             <img id="company-logo" src="./logo.png" alt="FortVax Logo">
