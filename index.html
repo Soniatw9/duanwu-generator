@@ -99,7 +99,7 @@
         
         .boat-options-grid {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr); /* 修改為 4 欄排版 */
             gap: 10px;
         }
         
@@ -226,7 +226,7 @@
 
         .svg-core-container {
             width: 420px;
-            height: 250px;
+            height: 200px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -237,7 +237,19 @@
             width: 100%;
             max-width: 320px;
             height: auto;
-            margin-bottom: 15px;
+        }
+
+        /* 龍舟下方的大字樣式 */
+        .display-main-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--gold-light);
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(246, 215, 211, 0.2);
+            letter-spacing: 12px;
+            padding-left: 12px; /* 抵銷最後一個字的間距以求置中 */
+            margin-top: 5px;
+            text-align: center;
         }
 
         /* 底部落款與Logo宣告文字 */
@@ -321,6 +333,11 @@
         </div>
 
         <div class="input-group">
+            <label for="input-main-title">Main Title (5 Characters)</label>
+            <input type="text" id="input-main-title" value="端午節快樂" maxlength="10">
+        </div>
+
+        <div class="input-group">
             <label for="input-sender">Sender Signature</label>
             <input type="text" id="input-sender" value="FortVax Sonia 敬賀">
         </div>
@@ -354,6 +371,7 @@
                 <div class="svg-core-container">
                     <img id="dynamic-dragon-boat" src="./dragon-boat/dragon-boat-1.png" alt="Selected Dragon Boat">
                 </div>
+                <div class="display-main-title" id="target-main-title">端午節快樂</div>
             </div>
 
             <div class="footer-section">
@@ -370,6 +388,7 @@
         const inputs = {
             recipient: document.getElementById('input-recipient'),
             subtitle: document.getElementById('input-subtitle'),
+            mainTitle: document.getElementById('input-main-title'), // 新增
             sender: document.getElementById('input-sender'),
             logoText: document.getElementById('input-logo-text')
         };
@@ -378,23 +397,25 @@
             recipient: document.getElementById('target-recipient'),
             subtitle: document.getElementById('target-subtitle'),
             boat: document.getElementById('dynamic-dragon-boat'),
+            mainTitle: document.getElementById('target-main-title'), // 新增
             sender: document.getElementById('target-sender'),
             logoText: document.getElementById('target-logo-text')
         };
 
-        // 即時預覽同步
+        /* 即時預覽同步 */
         inputs.recipient.addEventListener('input', (e) => targets.recipient.innerText = e.target.value);
         inputs.sender.addEventListener('input', (e) => targets.sender.innerText = e.target.value);
+        inputs.mainTitle.addEventListener('input', (e) => targets.mainTitle.innerText = e.target.value); // 新增
         inputs.subtitle.addEventListener('input', (e) => {
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
-        // 同步底部雙行宣言 (處理 Textarea 換行)
+        /* 同步底部雙行宣言 (處理 Textarea 換行) */
         inputs.logoText.addEventListener('input', (e) => {
             targets.logoText.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
-        // 龍舟船樣式選擇邏輯
+        /* 龍舟船樣式選擇邏輯 */
         const boatOptions = document.querySelectorAll('.boat-option');
         
         boatOptions.forEach(option => {
@@ -406,12 +427,12 @@
                 
                 // 3. 獲取 data-boat-id
                 const boatId = option.getAttribute('data-boat-id');
-                // 4. 動態更新畫布中的龍舟圖片路徑，使用正確的資料夾路徑
+                // 4. 動態更新畫布中的龍舟圖片路徑
                 targets.boat.src = `./dragon-boat/dragon-boat-${boatId}.png`;
             });
         });
 
-        // 高清圖片導出功能
+        /* 高清圖片導出功能 */
         function downloadPoster() {
             const poster = document.getElementById('poster-canvas');
             
