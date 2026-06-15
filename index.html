@@ -83,6 +83,57 @@
             box-shadow: 0 0 8px rgba(243, 209, 126, 0.3);
         }
 
+        /* 龍舟船樣式選擇區 */
+        .boat-selector-section {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .boat-selector-title {
+            font-size: 0.95rem;
+            color: var(--gold-light);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .boat-options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+        
+        .boat-option {
+            background-color: #0A1626;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .boat-option:hover {
+            border-color: rgba(197, 160, 89, 0.4);
+        }
+        
+        .boat-option.selected {
+            border-color: var(--gold-dark);
+            background-color: #1a2f4a;
+        }
+        
+        .boat-option img {
+            width: 100%;
+            height: auto;
+            opacity: 0.7;
+        }
+        
+        .boat-option.selected img {
+            opacity: 1;
+        }
+
         .btn-download {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
             color: var(--bg-dark);
@@ -176,20 +227,34 @@
         .svg-core-container {
             width: 420px;
             height: 250px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        /* 下部結構：寄件人與底部標誌 */
+        /* 可動態換圖的龍舟船樣式 */
+        #dynamic-dragon-boat {
+            width: 100%;
+            max-width: 320px;
+            height: auto;
+            margin-bottom: 15px;
+        }
+
+        /* 底部落款與Logo宣告文字 */
         .footer-section {
             text-align: center;
             width: 100%;
             z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
         }
 
         .display-sender {
             font-size: 1.15rem;
             color: var(--gold-light);
             letter-spacing: 3px;
-            margin-bottom: 12px;
         }
 
         /* 底部雙行宣告文字樣式優化 */
@@ -198,7 +263,7 @@
             color: rgba(186, 202, 223, 0.6);
             letter-spacing: 1.5px; 
             text-transform: uppercase; 
-            line-height: 1.5; /* 完美行高防止重疊 */
+            line-height: 1.5; 
         }
 
         /* 傳統祥雲背景裝飾 */
@@ -210,7 +275,7 @@
         .cloud-left { top: 35%; left: 25px; width: 90px; }
         .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
 
-        /* FortVax Logo 樣式設定 - 已縮小至 75px 且推至角落不擋字 */
+        /* FortVax Logo 樣式設定 */
         #company-logo {
             position: absolute; 
             bottom: 25px;       
@@ -237,9 +302,25 @@
             <textarea id="input-subtitle" rows="2" style="resize: none;">端午臨仲夏，時清日復長。&#13;感謝您長期的支持與陪伴，願您佳節平安。</textarea>
         </div>
 
-        <div class="input-group">
-            <label for="input-title">Main Title (Max 6 chars)</label>
-            <input type="text" id="input-title" value="端午安康" maxlength="6">
+        <div class="boat-selector-section">
+            <div class="boat-selector-title">Select Dragon Boat Style</div>
+            <div class="boat-options-grid" id="boat-options">
+                <div class="boat-option selected" data-boat-id="1">
+                    <img src="./dragon-boat/dragon-boat-1.png" alt="Boat Style 1">
+                </div>
+                <div class="boat-option" data-boat-id="2">
+                    <img src="./dragon-boat/dragon-boat-2.png" alt="Boat Style 2">
+                </div>
+                <div class="boat-option" data-boat-id="3">
+                    <img src="./dragon-boat/dragon-boat-3.png" alt="Boat Style 3">
+                </div>
+                <div class="boat-option" data-boat-id="4">
+                    <img src="./dragon-boat/dragon-boat-4.png" alt="Boat Style 4">
+                </div>
+                <div class="boat-option" data-boat-id="5">
+                    <img src="./dragon-boat/dragon-boat-5.png" alt="Boat Style 5">
+                </div>
+            </div>
         </div>
 
         <div class="input-group">
@@ -274,43 +355,7 @@
 
             <div class="middle-section">
                 <div class="svg-core-container">
-                    <svg viewBox="0 0 400 240" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <defs>
-                            <linearGradient id="goldTextGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-                                <stop offset="0%" stop-color="#FFFFFF" />
-                                <stop offset="35%" stop-color="#FFF2B2" />
-                                <stop offset="70%" stop-color="#E5BA6E" />
-                                <stop offset="100%" stop-color="#9E773B" />
-                            </linearGradient>
-                            <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
-                                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
-                            </filter>
-                        </defs>
-
-                        <g transform="translate(100, 15)">
-                            <polygon points="100,15 65,70 135,70" fill="none" stroke="#C9A55C" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
-                            <polygon points="100,22 73,72 122,77" fill="#16263D" stroke="#F6D785" stroke-width="2"/>
-                            <line x1="100" y1="22" x2="96" y2="74" stroke="#F6D785" stroke-width="1.5"/>
-                            <path d="M 87,51 Q 100,54 110,49" fill="none" stroke="#F6D785" stroke-width="1.5"/>
-                            <path d="M 85,55 Q 100,58 111,53" fill="none" stroke="#F6D785" stroke-width="1.5"/>
-                            
-                            <path d="M15,75 C 50,83 150,83 185,75 C 170,93 30,93 15,75 Z" fill="#C9A55C" opacity="0.25"/>
-                            <path d="M 10,75 Q 100,93 190,75" fill="none" stroke="#F6D785" stroke-width="2.5"/>
-                            <path d="M 190,75 Q 197,66 194,57 Q 188,63 183,72" fill="none" stroke="#F6D785" stroke-width="2"/>
-                            <path d="M 10,75 Q 3,69 5,62 Q 10,66 14,72" fill="none" stroke="#F6D785" stroke-width="2"/>
-                            <path d="M 35,88 Q 50,92 65,88 M 135,88 Q 150,92 165,88" fill="none" stroke="#C9A55C" stroke-width="1"/>
-                        </g>
-
-                        <text x="200" y="185" 
-                              font-family="'Noto Serif TC', 'Noto Serif CJK TC', serif" 
-                              font-weight="900" 
-                              font-size="46" 
-                              fill="url(#goldTextGradient)" 
-                              text-anchor="middle" 
-                              letter-spacing="12"
-                              filter="url(#shadow)"
-                              id="target-title">端午安康</text>
-                    </svg>
+                    <img id="dynamic-dragon-boat" src="./dragon-boat/dragon-boat-1.png" alt="Selected Dragon Boat">
                 </div>
             </div>
 
@@ -328,7 +373,6 @@
         const inputs = {
             recipient: document.getElementById('input-recipient'),
             subtitle: document.getElementById('input-subtitle'),
-            title: document.getElementById('input-title'),
             sender: document.getElementById('input-sender'),
             logoText: document.getElementById('input-logo-text')
         };
@@ -336,7 +380,7 @@
         const targets = {
             recipient: document.getElementById('target-recipient'),
             subtitle: document.getElementById('target-subtitle'),
-            title: document.getElementById('target-title'),
+            boat: document.getElementById('dynamic-dragon-boat'),
             sender: document.getElementById('target-sender'),
             logoText: document.getElementById('target-logo-text')
         };
@@ -353,9 +397,21 @@
             targets.logoText.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
-        // 同步主標題 (處理 SVG text)
-        inputs.title.addEventListener('input', (e) => {
-            targets.title.textContent = e.target.value;
+        // 龍舟船樣式選擇邏輯
+        const boatOptions = document.querySelectorAll('.boat-option');
+        
+        boatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // 1. 移除所有選項的 selected 狀態
+                boatOptions.forEach(opt => opt.classList.remove('selected'));
+                // 2. 將當前點擊的選項設為 selected
+                option.classList.add('selected');
+                
+                // 3. 獲取 data-boat-id
+                const boatId = option.getAttribute('data-boat-id');
+                // 4. 動態更新畫布中的龍舟圖片路徑，使用正確的資料夾路徑
+                targets.boat.src = `./dragon-boat/dragon-boat-${boatId}.png`;
+            });
         });
 
         // 高清圖片導出功能
@@ -374,8 +430,9 @@
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                const fileName = inputs.title.value.trim() || 'Greeting';
-                link.download = `${fileName}_Card.png`;
+                // 使用寄件人落款作為檔名
+                const senderName = inputs.sender.value.split(' ')[1] || inputs.sender.value.split(' ')[0] || 'FortVax';
+                link.download = `${senderName}_Card.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
