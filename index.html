@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>端午節祝賀圖智慧生成器 - 修正精修版</title>
+    <title>Dragon Boat Festival Card Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
@@ -47,10 +47,11 @@
         .sidebar h2 {
             font-family: 'Noto Serif TC', serif;
             color: var(--gold-light);
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             border-bottom: 2px solid var(--gold-dark);
             padding-bottom: 10px;
             margin-bottom: 5px;
+            letter-spacing: 1px;
         }
 
         .input-group {
@@ -63,6 +64,7 @@
             font-size: 0.9rem;
             color: var(--gold-light);
             font-weight: 500;
+            letter-spacing: 0.5px;
         }
 
         .input-group input, .input-group textarea {
@@ -171,7 +173,6 @@
             z-index: 2;
         }
 
-        /* 修正導出 Bug 的核心：改用 SVG 整合排版圖形與大字標題 */
         .svg-core-container {
             width: 420px;
             height: 250px;
@@ -188,13 +189,15 @@
             font-size: 1.15rem;
             color: var(--gold-light);
             letter-spacing: 3px;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
+        /* 優化後的底部宣告文字樣式 */
         .display-logo-text {
-            font-size: 0.75rem;
-            color: rgba(186, 202, 223, 0.45);
-            letter-spacing: 5px;
+            font-size: 0.65rem; /* 稍微縮小字體以容納較長的英文 */
+            color: rgba(186, 202, 223, 0.55);
+            letter-spacing: 1.5px; /* 縮小字距確保不折行 */
+            text-transform: uppercase; /* 全部轉換為大寫更具專業感 */
         }
 
         /* 傳統祥雲背景裝飾 */
@@ -209,46 +212,46 @@
         /* FortVax Logo 樣式設定 */
         #company-logo {
             position: absolute; 
-            bottom: 30px;       /* 距離底部距離，可微調 */
-            right: 35px;        /* 距離右側距離，可微調 */
-            width: 110px;       /* 調整 Logo 大小，維持質感不搶主視覺 */
+            bottom: 30px;       
+            right: 35px;        
+            width: 110px;       
             height: auto;       
             z-index: 10;        
-            opacity: 0.9;       /* 微微透明度，更好地融入深色背景 */
+            opacity: 0.9;       
         }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <h2>端午賀圖控制台</h2>
+        <h2>Card Generator</h2>
         
         <div class="input-group">
-            <label for="input-recipient">收件人稱呼</label>
+            <label for="input-recipient">Recipient</label>
             <input type="text" id="input-recipient" value="親愛的合作夥伴與客戶：">
         </div>
 
         <div class="input-group">
-            <label for="input-subtitle">副標題 / 祝福語</label>
+            <label for="input-subtitle">Subtitle / Message</label>
             <textarea id="input-subtitle" rows="2" style="resize: none;">端午臨仲夏，時清日復長。&#13;感謝您長期的支持與陪伴，願您佳節平安。</textarea>
         </div>
 
         <div class="input-group">
-            <label for="input-title">核心主標題（建議4個字內）</label>
+            <label for="input-title">Main Title (Max 6 chars)</label>
             <input type="text" id="input-title" value="端午安康" maxlength="6">
         </div>
 
         <div class="input-group">
-            <label for="input-sender">寄件人落款</label>
-            <input type="text" id="input-sender" value="FortVax AI 團隊 敬賀">
+            <label for="input-sender">Sender Signature</label>
+            <input type="text" id="input-sender" value="FortVax Sonia 敬賀">
         </div>
 
         <div class="input-group">
-            <label for="input-logo-text">底部標誌文字 / 宣言</label>
-            <input type="text" id="input-logo-text" value="SOVEREIGN AI &amp; COMPLIANCE SOLUTIONS">
+            <label for="input-logo-text">Footer Text / Declaration</label>
+            <input type="text" id="input-logo-text" value="FortVax under Taiwan Numerical Powers Co., Ltd. (Stock Code: 7781)">
         </div>
 
-        <button class="btn-download" onclick="downloadPoster()">💾 下載 PNG 圖片</button>
+        <button class="btn-download" onclick="downloadPoster()">💾 Download PNG</button>
     </div>
 
     <div class="preview-container">
@@ -311,8 +314,8 @@
             </div>
 
             <div class="footer-section">
-                <div class="display-sender" id="target-sender">FortVax AI 團隊 敬賀</div>
-                <div class="display-logo-text" id="target-logo-text">SOVEREIGN AI & COMPLIANCE SOLUTIONS</div>
+                <div class="display-sender" id="target-sender">FortVax Sonia 敬賀</div>
+                <div class="display-logo-text" id="target-logo-text">FORTVAX UNDER TAIWAN NUMERICAL POWERS CO., LTD. (STOCK CODE: 7781)</div>
             </div>
 
             <img id="company-logo" src="./logo.png" alt="FortVax Logo">
@@ -356,7 +359,7 @@
             
             // 下載時顯示提示，防呆處理
             const btn = document.querySelector('.btn-download');
-            btn.innerText = "⏳ 圖片生成中...";
+            btn.innerText = "⏳ Generating Image...";
             btn.disabled = true;
 
             html2canvas(poster, {
@@ -366,17 +369,17 @@
                 logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                const fileName = inputs.title.value.trim() || '端午祝賀';
-                link.download = `${fileName}_賀圖.png`;
+                const fileName = inputs.title.value.trim() || 'Greeting';
+                link.download = `${fileName}_Card.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
                 // 還原按鈕狀態
-                btn.innerText = "💾 下載 PNG 圖片";
+                btn.innerText = "💾 Download PNG";
                 btn.disabled = false;
             }).catch(err => {
                 console.error(err);
-                btn.innerText = "❌ 發生錯誤，請重試";
+                btn.innerText = "❌ Error, please try again";
                 btn.disabled = false;
             });
         }
