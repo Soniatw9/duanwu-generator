@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>端午節祝賀圖智慧生成器</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg-dark: #0B192C;
+            --bg-card: #1E3047;
+            --gold-light: #F3D17E;
+            --gold-dark: #C5A059;
+            --text-light: #E0E7FF;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #060b13;
+            color: var(--text-light);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* 左側控制欄 */
+        .sidebar {
+            width: 360px;
+            background-color: var(--bg-card);
+            padding: 25px;
+            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            border-right: 1px solid rgba(197, 160, 89, 0.2);
+            z-index: 10;
+        }
+
+        .sidebar h2 {
+            font-family: 'Noto Serif TC', serif;
+            color: var(--gold-light);
+            font-size: 1.4rem;
+            border-bottom: 2px solid var(--gold-dark);
+            padding-bottom: 10px;
+            margin-bottom: 5px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .input-group label {
+            font-size: 0.9rem;
+            color: var(--gold-light);
+            font-weight: 500;
+        }
+
+        .input-group input, .input-group textarea {
+            background-color: var(--bg-dark);
+            border: 1px solid rgba(197, 160, 89, 0.4);
+            border-radius: 6px;
+            padding: 10px;
+            color: #fff;
+            font-size: 0.95rem;
+            transition: all 0.3s;
+        }
+
+        .input-group input:focus, .input-group textarea:focus {
+            border-color: var(--gold-light);
+            outline: none;
+            box-shadow: 0 0 8px rgba(243, 209, 126, 0.3);
+        }
+
+        .btn-download {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold-light));
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 6px;
+            padding: 14px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, opacity 0.2s;
+            margin-top: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .btn-download:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        /* 右側預覽區 */
+        .preview-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--bg-dark);
+            padding: 20px;
+            overflow: auto;
+        }
+
+        /* 賀圖本體畫布 (依據傳統 1:1 黃金比例設計，可完美匯出) */
+        #poster-canvas {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle at center, #112643 0%, #06101E 100%);
+            border: 12px double var(--gold-dark);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.7);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 40px;
+            overflow: hidden;
+        }
+
+        /* 畫布內復古暗紋與裝飾 */
+        #poster-canvas::before {
+            content: "";
+            position: absolute;
+            top: 15px; left: 15px; right: 15px; bottom: 15px;
+            border: 1px solid rgba(197, 160, 89, 0.2);
+            pointer-events: none;
+        }
+
+        /* 上部結構：收件人與副標題 */
+        .header-section {
+            text-align: center;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .display-recipient {
+            font-size: 1.2rem;
+            color: var(--gold-light);
+            margin-bottom: 12px;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        .display-subtitle {
+            font-size: 1.1rem;
+            color: #A4B3C6;
+            letter-spacing: 4px;
+            line-height: 1.6;
+            max-width: 80%;
+            margin: 0 auto;
+        }
+
+        /* 中部結構：核心主標題與圖形 */
+        .middle-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* SVG 龍舟與粽子組合圖案 */
+        .illustration-container {
+            width: 220px;
+            height: 130px;
+            margin-bottom: 10px;
+        }
+
+        .display-title {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: transparent;
+            background: linear-gradient(to bottom, #FFFFFF 0%, #FFEFA6 40%, #D8AE5E 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            letter-spacing: 12px;
+            margin-left: 12px; /* 修正字距偏移 */
+            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+
+        /* 下部結構：寄件人與底部標誌 */
+        .footer-section {
+            text-align: center;
+            width: 100%;
+            z-index: 2;
+        }
+
+        .display-sender {
+            font-size: 1.1rem;
+            color: var(--gold-light);
+            letter-spacing: 3px;
+            margin-bottom: 15px;
+        }
+
+        .display-logo-text {
+            font-size: 0.8rem;
+            color: rgba(164, 179, 198, 0.5);
+            letter-spacing: 5px;
+            text-transform: uppercase;
+        }
+
+        /* 傳統祥雲背景裝飾 */
+        .cloud {
+            position: absolute;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+        .cloud-left { top: 40%; left: 30px; width: 80px; }
+        .cloud-right { top: 35%; right: 30px; width: 80px; transform: scaleX(-1); }
+    </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <h2>端午賀圖控制台</h2>
+        
+        <div class="input-group">
+            <label for="input-recipient">收件人稱呼</label>
+            <input type="text" id="input-recipient" value="親愛的合作夥伴與客戶：">
+        </div>
+
+        <div class="input-group">
+            <label for="input-subtitle">副標題 / 祝福語</label>
+            <textarea id="input-subtitle" rows="2" style="resize: none;">端午臨仲夏，時清日復長。&#13;感謝您長期的支持與陪伴，願您佳節平安。</textarea>
+        </div>
+
+        <div class="input-group">
+            <label for="input-title">核心主標題</label>
+            <input type="text" id="input-title" value="端午安康">
+        </div>
+
+        <div class="input-group">
+            <label for="input-sender">寄件人落款</label>
+            <input type="text" id="input-sender" value="FortVax AI 團隊 敬賀">
+        </div>
+
+        <div class="input-group">
+            <label for="input-logo-text">底部標誌文字 / 宣言</label>
+            <input type="text" id="input-logo-text" value="SOVEREIGN AI &amp; COMPLIANCE SOLUTIONS">
+        </div>
+
+        <button class="btn-download" onclick="downloadPoster()">💾 下載 PNG 圖片</button>
+    </div>
+
+    <div class="preview-container">
+        <div id="poster-canvas">
+            
+            <svg class="cloud cloud-left" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C5A059" stroke-width="1.5"/>
+                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C5A059" stroke-width="1"/>
+            </svg>
+            <svg class="cloud cloud-right" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C5A059" stroke-width="1.5"/>
+                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C5A059" stroke-width="1"/>
+            </svg>
+
+            <div class="header-section">
+                <div class="display-recipient" id="target-recipient">親愛的合作夥伴與客戶：</div>
+                <div class="display-subtitle" id="target-subtitle">端午臨仲夏，時清日復長。<br>感謝您長期的支持與陪伴，願您佳節平安。</div>
+            </div>
+
+            <div class="middle-section">
+                <div class="illustration-container">
+                    <svg viewBox="0 0 200 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <polygon points="100,20 60,80 140,80" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-dasharray="2,2"/>
+                        <polygon points="100,30 70,85 125,90" fill="#1E3047" stroke="#F3D17E" stroke-width="2"/>
+                        <line x1="100" y1="30" x2="95" y2="87" stroke="#F3D17E" stroke-width="1.5"/>
+                        <path d="M 85,60 Q 100,63 112,58" fill="none" stroke="#F3D17E" stroke-width="1.5"/>
+                        <path d="M 83,64 Q 100,67 114,62" fill="none" stroke="#F3D17E" stroke-width="1.5"/>
+                        
+                        <path d="M15,85 C 50,95 150,95 185,85 C 170,105 30,105 15,85 Z" fill="#C5A059" opacity="0.3"/>
+                        <path d="M 10,85 Q 100,105 190,85" fill="none" stroke="#F3D17E" stroke-width="2.5"/>
+                        <path d="M 190,85 Q 198,75 195,65 Q 188,72 182,82" fill="none" stroke="#F3D17E" stroke-width="2"/>
+                        <path d="M 10,85 Q 2,78 5,70 Q 10,75 14,82" fill="none" stroke="#F3D17E" stroke-width="2"/>
+                        <path d="M 30,100 Q 50,105 70,100 M 110,100 Q 130,105 150,100" fill="none" stroke="#C5A059" stroke-width="1"/>
+                    </svg>
+                </div>
+                <div class="display-title" id="target-title">端午安康</div>
+            </div>
+
+            <div class="footer-section">
+                <div class="display-sender" id="target-sender">FortVax AI 團隊 敬賀</div>
+                <div class="display-logo-text" id="target-logo-text">SOVEREIGN AI & COMPLIANCE SOLUTIONS</div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const inputs = {
+            recipient: document.getElementById('input-recipient'),
+            subtitle: document.getElementById('input-subtitle'),
+            title: document.getElementById('input-title'),
+            sender: document.getElementById('input-sender'),
+            logoText: document.getElementById('input-logo-text')
+        };
+
+        const targets = {
+            recipient: document.getElementById('target-recipient'),
+            subtitle: document.getElementById('target-subtitle'),
+            title: document.getElementById('target-title'),
+            sender: document.getElementById('target-sender'),
+            logoText: document.getElementById('target-logo-text')
+        };
+
+        // 即時預覽同步
+        inputs.recipient.addEventListener('input', (e) => targets.recipient.innerText = e.target.value);
+        inputs.title.addEventListener('input', (e) => targets.title.innerText = e.target.value);
+        inputs.sender.addEventListener('input', (e) => targets.sender.innerText = e.target.value);
+        inputs.logoText.addEventListener('input', (e) => targets.logoText.innerText = e.target.value);
+        inputs.subtitle.addEventListener('input', (e) => {
+            targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
+        });
+
+        // 高清圖片導出功能
+        function downloadPoster() {
+            const poster = document.getElementById('poster-canvas');
+            
+            // 使用 html2canvas 將 DOM 轉換為高清圖片
+            html2canvas(poster, {
+                scale: 2, // 放大兩倍確保導出文字與線條極度清晰不模糊
+                useCORS: true,
+                backgroundColor: null
+            }).then(canvas => {
+                const link = document.createElement('a');
+                // 依據主標題自動命名
+                const fileName = inputs.title.value.trim() || '端午祝賀';
+                link.download = `${fileName}_賀圖.png`;
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
