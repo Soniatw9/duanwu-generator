@@ -192,12 +192,13 @@
             margin-bottom: 12px;
         }
 
-        /* 底部宣告文字樣式優化：因為字串變短，微調字距讓其更大氣開闊 */
+        /* 底部雙行宣告文字樣式優化 */
         .display-logo-text {
-            font-size: 0.7rem; 
+            font-size: 0.6rem; 
             color: rgba(186, 202, 223, 0.6);
-            letter-spacing: 2.5px; /* 增加字距讓排版更平穩有氣度 */
+            letter-spacing: 1.5px; 
             text-transform: uppercase; 
+            line-height: 1.5; /* 完美行高防止重疊 */
         }
 
         /* 傳統祥雲背景裝飾 */
@@ -209,7 +210,7 @@
         .cloud-left { top: 35%; left: 25px; width: 90px; }
         .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
 
-        /* FortVax Logo 樣式設定 */
+        /* FortVax Logo 樣式設定 - 已縮小至 75px 且推至角落不擋字 */
         #company-logo {
             position: absolute; 
             bottom: 25px;       
@@ -248,7 +249,7 @@
 
         <div class="input-group">
             <label for="input-logo-text">Footer Text / Declaration</label>
-            <input type="text" id="input-logo-text" value="FortVax under Taiwan Numerical Powers Co., Ltd. (6593)">
+            <textarea id="input-logo-text" rows="2" style="resize: none;">FORTVAX AI — ENTERPRISE AI SOLUTION MANUFACTURER&#13;UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</textarea>
         </div>
 
         <button class="btn-download" onclick="downloadPoster()">💾 Download PNG</button>
@@ -315,7 +316,7 @@
 
             <div class="footer-section">
                 <div class="display-sender" id="target-sender">FortVax Sonia 敬賀</div>
-                <div class="display-logo-text" id="target-logo-text">FORTVAX UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</div>
+                <div class="display-logo-text" id="target-logo-text">FORTVAX AI — ENTERPRISE AI SOLUTION MANUFACTURER<br>UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</div>
             </div>
 
             <img id="company-logo" src="./logo.png" alt="FortVax Logo">
@@ -343,9 +344,13 @@
         // 即時預覽同步
         inputs.recipient.addEventListener('input', (e) => targets.recipient.innerText = e.target.value);
         inputs.sender.addEventListener('input', (e) => targets.sender.innerText = e.target.value);
-        inputs.logoText.addEventListener('input', (e) => targets.logoText.innerText = e.target.value);
         inputs.subtitle.addEventListener('input', (e) => {
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
+        });
+        
+        // 同步底部雙行宣言 (處理 Textarea 換行)
+        inputs.logoText.addEventListener('input', (e) => {
+            targets.logoText.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
         // 同步主標題 (處理 SVG text)
