@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dragon Boat Festival Card Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght=600;900&family=Noto+Sans+TC:wght=400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
@@ -99,7 +99,7 @@
         
         .boat-options-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 修改為 4 欄排版 */
+            grid-template-columns: repeat(4, 1fr); /* 4張圖對齊排版 */
             gap: 10px;
         }
         
@@ -232,11 +232,13 @@
             align-items: center;
         }
 
-        /* 可動態換圖的龍舟船樣式 */
+        /* 可動態換圖的龍舟船樣式 + 建議二：金色發光濾鏡 */
         #dynamic-dragon-boat {
             width: 100%;
             max-width: 320px;
             height: auto;
+            /* 核心修改：為龍舟加上突顯輪廓的金色背光，防止被深色背景吃掉 */
+            filter: drop-shadow(0 0 12px rgba(246, 215, 133, 0.85));
         }
 
         /* 龍舟下方的大字樣式 */
@@ -247,7 +249,7 @@
             color: var(--gold-light);
             text-shadow: 0 4px 10px rgba(0, 0, 0, 0.6), 0 0 15px rgba(246, 215, 211, 0.2);
             letter-spacing: 12px;
-            padding-left: 12px; /* 抵銷最後一個字的間距以求置中 */
+            padding-left: 12px;
             margin-top: 5px;
             text-align: center;
         }
@@ -363,7 +365,7 @@
             </svg>
 
             <div class="header-section">
-                <div class="display-recipient" id="target-recipient">親愛的合作夥伴與客戶：</div>
+                <div class="display-recipient" id="target-recipient">親愛的合作夥伴：</div>
                 <div class="display-subtitle" id="target-subtitle">端午臨仲夏，時清日復長。<br>感謝您長期的支持與陪伴，願您佳節平安。</div>
             </div>
 
@@ -388,7 +390,7 @@
         const inputs = {
             recipient: document.getElementById('input-recipient'),
             subtitle: document.getElementById('input-subtitle'),
-            mainTitle: document.getElementById('input-main-title'), // 新增
+            mainTitle: document.getElementById('input-main-title'),
             sender: document.getElementById('input-sender'),
             logoText: document.getElementById('input-logo-text')
         };
@@ -397,7 +399,7 @@
             recipient: document.getElementById('target-recipient'),
             subtitle: document.getElementById('target-subtitle'),
             boat: document.getElementById('dynamic-dragon-boat'),
-            mainTitle: document.getElementById('target-main-title'), // 新增
+            mainTitle: document.getElementById('target-main-title'),
             sender: document.getElementById('target-sender'),
             logoText: document.getElementById('target-logo-text')
         };
@@ -405,7 +407,7 @@
         /* 即時預覽同步 */
         inputs.recipient.addEventListener('input', (e) => targets.recipient.innerText = e.target.value);
         inputs.sender.addEventListener('input', (e) => targets.sender.innerText = e.target.value);
-        inputs.mainTitle.addEventListener('input', (e) => targets.mainTitle.innerText = e.target.value); // 新增
+        inputs.mainTitle.addEventListener('input', (e) => targets.mainTitle.innerText = e.target.value);
         inputs.subtitle.addEventListener('input', (e) => {
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
