@@ -30,9 +30,10 @@
             overflow: hidden;
         }
 
-        /* 左側控制欄 */
+        /* 左側控制欄 - 桌機端預設 */
         .sidebar {
             width: 360px;
+            min-width: 360px;
             background-color: var(--bg-card);
             padding: 25px;
             box-shadow: 4px 0 15px rgba(0,0,0,0.5);
@@ -99,7 +100,7 @@
         
         .boat-options-grid {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 4張圖對齊排版 */
+            grid-template-columns: repeat(4, 1fr);
             gap: 10px;
         }
         
@@ -153,21 +154,32 @@
             transform: translateY(-1px);
         }
 
-        /* 右側預覽區 */
+        /* 右側預覽區 - 桌機端預設 */
         .preview-container {
             flex: 1;
             display: flex;
             justify-content: center;
             align-items: center;
             background-color: var(--bg-dark);
-            padding: 20px;
+            padding: 30px;
             overflow: auto;
         }
 
-        /* 賀圖畫布 - 1:1 黃金比例 */
+        /* 賀圖畫布 - 外層包裹容器用來支援手機縮放 */
+        .canvas-wrapper {
+            width: 600px;
+            max-width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 賀圖畫布本體 - 1:1 黃金比例 */
         #poster-canvas {
             width: 600px;
             height: 600px;
+            /* 讓畫布在小螢幕時等比例縮放，避免被切到 */
+            aspect-ratio: 1 / 1;
             background: radial-gradient(circle at center, #122846 0%, #061224 100%);
             border: 12px double var(--gold-dark);
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
@@ -178,6 +190,8 @@
             align-items: center;
             padding: 55px 45px;
             overflow: hidden;
+            box-sizing: border-box;
+            flex-shrink: 0;
         }
 
         /* 內框裝飾細線 */
@@ -214,7 +228,7 @@
             margin: 0 auto;
         }
 
-        /* 中部結構：插圖與核心主標題 */
+        /* 中部結構 */
         .middle-section {
             display: flex;
             flex-direction: column;
@@ -230,14 +244,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            max-width: 100%;
         }
 
-        /* 可動態換圖的龍舟船樣式 + 建議二：金色發光濾鏡 */
+        /* 龍舟圖片與光暈濾鏡 */
         #dynamic-dragon-boat {
             width: 100%;
             max-width: 320px;
             height: auto;
-            /* 核心修改：為龍舟加上突顯輪廓的金色背光，防止被深色背景吃掉 */
             filter: drop-shadow(0 0 12px rgba(246, 215, 133, 0.85));
         }
 
@@ -271,7 +285,6 @@
             letter-spacing: 3px;
         }
 
-        /* 底部雙行宣告文字樣式優化 */
         .display-logo-text {
             font-size: 0.6rem; 
             color: rgba(186, 202, 223, 0.6);
@@ -289,7 +302,7 @@
         .cloud-left { top: 35%; left: 25px; width: 90px; }
         .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
 
-        /* FortVax Logo 樣式設定 */
+        /* FortVax Logo */
         #company-logo {
             position: absolute; 
             bottom: 25px;       
@@ -298,6 +311,47 @@
             height: auto;       
             z-index: 10;        
             opacity: 0.85;       
+        }
+
+        /* 📱 關鍵修改：RWD 手機端專用響應式樣式優化 (螢幕寬度小於 768px 時自動觸發) */
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column; /* 左右排列改為上下排列 */
+                height: auto;
+                overflow-y: auto; /* 放開滾動條限制 */
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid rgba(197, 160, 89, 0.3);
+                padding: 20px;
+            }
+
+            .preview-container {
+                width: 100%;
+                padding: 15px;
+                box-sizing: border-box;
+                background-color: #03070d;
+                justify-content: center;
+            }
+
+            .canvas-wrapper {
+                width: 100%;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+            }
+
+            /* 手機版智慧縮放機制：利用 CSS transform 的方式縮放，確保產生器匯出成圖片時不會變形或失真 */
+            #poster-canvas {
+                width: 600px !important;
+                height: 600px !important;
+                transform-origin: top center;
+                /* 預留一些手機版字體可能因尺寸縮小而調整的彈性 */
+            }
         }
     </style>
 </head>
@@ -353,36 +407,38 @@
     </div>
 
     <div class="preview-container">
-        <div id="poster-canvas">
-            
-            <svg class="cloud cloud-left" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
-                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
-            </svg>
-            <svg class="cloud cloud-right" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
-                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
-            </svg>
+        <div class="canvas-wrapper" id="canvas-scaler-box">
+            <div id="poster-canvas">
+                
+                <svg class="cloud cloud-left" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
+                    <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
+                </svg>
+                <svg class="cloud cloud-right" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
+                    <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
+                </svg>
 
-            <div class="header-section">
-                <div class="display-recipient" id="target-recipient">親愛的合作夥伴：</div>
-                <div class="display-subtitle" id="target-subtitle">端午臨仲夏，時清日復長。<br>感謝您長期的支持與陪伴，願您佳節平安。</div>
-            </div>
-
-            <div class="middle-section">
-                <div class="svg-core-container">
-                    <img id="dynamic-dragon-boat" src="./dragon-boat/dragon-boat-1.png" alt="Selected Dragon Boat">
+                <div class="header-section">
+                    <div class="display-recipient" id="target-recipient">親愛的合作夥伴與客戶：</div>
+                    <div class="display-subtitle" id="target-subtitle">端午臨仲夏，時清日復長。<br>感謝您長期的支持與陪伴，願您佳節平安。</div>
                 </div>
-                <div class="display-main-title" id="target-main-title">端午節快樂</div>
+
+                <div class="middle-section">
+                    <div class="svg-core-container">
+                        <img id="dynamic-dragon-boat" src="./dragon-boat/dragon-boat-1.png" alt="Selected Dragon Boat">
+                    </div>
+                    <div class="display-main-title" id="target-main-title">端午節快樂</div>
+                </div>
+
+                <div class="footer-section">
+                    <div class="display-sender" id="target-sender">FortVax Sonia 敬賀</div>
+                    <div class="display-logo-text" id="target-logo-text">FORTVAX AI — ENTERPRISE AI SOLUTION MANUFACTURER<br>UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</div>
+                </div>
+
+                <img id="company-logo" src="./logo.png" alt="FortVax Logo">
+
             </div>
-
-            <div class="footer-section">
-                <div class="display-sender" id="target-sender">FortVax Sonia 敬賀</div>
-                <div class="display-logo-text" id="target-logo-text">FORTVAX AI — ENTERPRISE AI SOLUTION MANUFACTURER<br>UNDER TAIWAN NUMERICAL POWERS CO., LTD. (6593)</div>
-            </div>
-
-            <img id="company-logo" src="./logo.png" alt="FortVax Logo">
-
         </div>
     </div>
 
@@ -412,55 +468,76 @@
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
-        /* 同步底部雙行宣言 (處理 Textarea 換行) */
+        /* 同步底部雙行宣言 */
         inputs.logoText.addEventListener('input', (e) => {
             targets.logoText.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
         /* 龍舟船樣式選擇邏輯 */
         const boatOptions = document.querySelectorAll('.boat-option');
-        
         boatOptions.forEach(option => {
             option.addEventListener('click', () => {
-                // 1. 移除所有選項的 selected 狀態
                 boatOptions.forEach(opt => opt.classList.remove('selected'));
-                // 2. 將當前點擊的選項設為 selected
                 option.classList.add('selected');
-                
-                // 3. 獲取 data-boat-id
                 const boatId = option.getAttribute('data-boat-id');
-                // 4. 動態更新畫布中的龍舟圖片路徑
                 targets.boat.src = `./dragon-boat/dragon-boat-${boatId}.png`;
             });
         });
 
+        /* 📱 手機端動態縮放畫布核心邏輯 */
+        function handleMobileScale() {
+            const wrapper = document.getElementById('canvas-scaler-box');
+            const canvas = document.getElementById('poster-canvas');
+            if (window.innerWidth <= 768) {
+                const availableWidth = wrapper.offsetWidth;
+                const scaleFactor = availableWidth / 600; // 計算螢幕寬度與畫布 600px 的比例
+                canvas.style.transform = `scale(${scaleFactor})`;
+                wrapper.style.height = `${600 * scaleFactor}px`; // 動態修正外層容器高度，防止下方留白過多
+            } else {
+                canvas.style.transform = 'none';
+                wrapper.style.height = 'auto';
+            }
+        }
+        window.addEventListener('resize', handleMobileScale);
+        window.addEventListener('DOMContentLoaded', handleMobileScale);
+        // 當圖片或字體加載完成後再次校正縮放
+        window.addEventListener('load', handleMobileScale);
+
         /* 高清圖片導出功能 */
         function downloadPoster() {
             const poster = document.getElementById('poster-canvas');
-            
-            // 下載時顯示提示，防呆處理
             const btn = document.querySelector('.btn-download');
             btn.innerText = "⏳ Generating Image...";
             btn.disabled = true;
 
+            // 在產生圖片前，先把手機版的 transform 縮放效果暫時移除，避免 html2canvas 裁切不準
+            const currentTransform = poster.style.transform;
+            poster.style.transform = 'none';
+
             html2canvas(poster, {
-                scale: 2, // 放大兩倍輸出，確保高清
+                scale: 2, 
                 useCORS: true,
                 backgroundColor: null,
                 logging: false
             }).then(canvas => {
+                // 產生完成後還原手機版的縮放外觀
+                if (window.innerWidth <= 768) {
+                    handleMobileScale();
+                } else {
+                    poster.style.transform = currentTransform;
+                }
+
                 const link = document.createElement('a');
-                // 使用寄件人落款作為檔名
                 const senderName = inputs.sender.value.split(' ')[1] || inputs.sender.value.split(' ')[0] || 'FortVax';
                 link.download = `${senderName}_Card.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
                 
-                // 還原按鈕狀態
                 btn.innerText = "💾 Download PNG";
                 btn.disabled = false;
             }).catch(err => {
                 console.error(err);
+                if (window.innerWidth <= 768) handleMobileScale();
                 btn.innerText = "❌ Error, please try again";
                 btn.disabled = false;
             });
