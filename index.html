@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>端午節祝賀圖智慧生成器</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
+    <title>端午節祝賀圖智慧生成器 - 修正精修版</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Noto+Sans+TC:wght@400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
-            --bg-dark: #0B192C;
-            --bg-card: #1E3047;
-            --gold-light: #F3D17E;
-            --gold-dark: #C5A059;
-            --text-light: #E0E7FF;
+            --bg-dark: #0A1626;
+            --bg-card: #16263D;
+            --gold-light: #F6D785;
+            --gold-dark: #C9A55C;
+            --text-light: #E2E8F0;
         }
 
         * {
@@ -23,7 +23,7 @@
 
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #060b13;
+            background-color: #050b14;
             color: var(--text-light);
             display: flex;
             height: 100vh;
@@ -40,7 +40,7 @@
             flex-direction: column;
             gap: 20px;
             overflow-y: auto;
-            border-right: 1px solid rgba(197, 160, 89, 0.2);
+            border-right: 1px solid rgba(197, 160, 89, 0.3);
             z-index: 10;
         }
 
@@ -111,11 +111,11 @@
             overflow: auto;
         }
 
-        /* 賀圖本體畫布 (依據傳統 1:1 黃金比例設計，可完美匯出) */
+        /* 賀圖畫布 - 1:1 黃金比例 */
         #poster-canvas {
             width: 600px;
             height: 600px;
-            background: radial-gradient(circle at center, #112643 0%, #06101E 100%);
+            background: radial-gradient(circle at center, #122846 0%, #061224 100%);
             border: 12px double var(--gold-dark);
             box-shadow: 0 10px 30px rgba(0,0,0,0.7);
             position: relative;
@@ -123,16 +123,16 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 50px 40px;
+            padding: 55px 45px;
             overflow: hidden;
         }
 
-        /* 畫布內復古暗紋與裝飾 */
+        /* 內框裝飾細線 */
         #poster-canvas::before {
             content: "";
             position: absolute;
             top: 15px; left: 15px; right: 15px; bottom: 15px;
-            border: 1px solid rgba(197, 160, 89, 0.2);
+            border: 1px solid rgba(246, 215, 133, 0.2);
             pointer-events: none;
         }
 
@@ -144,52 +144,37 @@
         }
 
         .display-recipient {
-            font-size: 1.2rem;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-size: 1.25rem;
             color: var(--gold-light);
-            margin-bottom: 12px;
+            margin-bottom: 15px;
             letter-spacing: 2px;
             font-weight: 500;
         }
 
         .display-subtitle {
-            font-size: 1.1rem;
-            color: #A4B3C6;
+            font-size: 1.05rem;
+            color: #BACADF;
             letter-spacing: 4px;
-            line-height: 1.6;
-            max-width: 80%;
+            line-height: 1.7;
+            max-width: 85%;
             margin: 0 auto;
         }
 
-        /* 中部結構：核心主標題與圖形 */
+        /* 中部結構：插圖與核心主標題 */
         .middle-section {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             width: 100%;
-            position: relative;
             z-index: 2;
         }
 
-        /* SVG 龍舟與粽子組合圖案 */
-        .illustration-container {
-            width: 220px;
-            height: 130px;
-            margin-bottom: 10px;
-        }
-
-        .display-title {
-            font-family: 'Noto Serif TC', serif;
-            font-size: 3.2rem;
-            font-weight: 700;
-            color: transparent;
-            background: linear-gradient(to bottom, #FFFFFF 0%, #FFEFA6 40%, #D8AE5E 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            letter-spacing: 12px;
-            margin-left: 12px; /* 修正字距偏移 */
-            text-shadow: 0 4px 12px rgba(0,0,0,0.6);
-            text-align: center;
+        /* 修正導出 Bug 的核心：改用 SVG 整合排版圖形與大字標題 */
+        .svg-core-container {
+            width: 420px;
+            height: 250px;
         }
 
         /* 下部結構：寄件人與底部標誌 */
@@ -200,27 +185,26 @@
         }
 
         .display-sender {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             color: var(--gold-light);
             letter-spacing: 3px;
             margin-bottom: 15px;
         }
 
         .display-logo-text {
-            font-size: 0.8rem;
-            color: rgba(164, 179, 198, 0.5);
+            font-size: 0.75rem;
+            color: rgba(186, 202, 223, 0.45);
             letter-spacing: 5px;
-            text-transform: uppercase;
         }
 
         /* 傳統祥雲背景裝飾 */
         .cloud {
             position: absolute;
-            opacity: 0.15;
+            opacity: 0.12;
             pointer-events: none;
         }
-        .cloud-left { top: 40%; left: 30px; width: 80px; }
-        .cloud-right { top: 35%; right: 30px; width: 80px; transform: scaleX(-1); }
+        .cloud-left { top: 35%; left: 25px; width: 90px; }
+        .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
     </style>
 </head>
 <body>
@@ -239,8 +223,8 @@
         </div>
 
         <div class="input-group">
-            <label for="input-title">核心主標題</label>
-            <input type="text" id="input-title" value="端午安康">
+            <label for="input-title">核心主標題（建議4個字內）</label>
+            <input type="text" id="input-title" value="端午安康" maxlength="6">
         </div>
 
         <div class="input-group">
@@ -260,12 +244,12 @@
         <div id="poster-canvas">
             
             <svg class="cloud cloud-left" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C5A059" stroke-width="1.5"/>
-                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C5A059" stroke-width="1"/>
+                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
+                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
             </svg>
             <svg class="cloud cloud-right" viewBox="0 0 100 60" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C5A059" stroke-width="1.5"/>
-                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C5A059" stroke-width="1"/>
+                <path d="M10 40 C 10 25, 30 25, 35 30 C 40 15, 65 15, 70 30 C 85 20, 95 35, 85 45 C 95 55, 60 60, 50 50 C 30 60, 10 50, 10 40 Z" stroke="#C9A55C" stroke-width="1.5"/>
+                <path d="M20 45 C 25 38, 45 38, 50 45" stroke="#C9A55C" stroke-width="1"/>
             </svg>
 
             <div class="header-section">
@@ -274,22 +258,45 @@
             </div>
 
             <div class="middle-section">
-                <div class="illustration-container">
-                    <svg viewBox="0 0 200 120" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-                        <polygon points="100,20 60,80 140,80" fill="none" stroke="#C5A059" stroke-width="1.5" stroke-dasharray="2,2"/>
-                        <polygon points="100,30 70,85 125,90" fill="#1E3047" stroke="#F3D17E" stroke-width="2"/>
-                        <line x1="100" y1="30" x2="95" y2="87" stroke="#F3D17E" stroke-width="1.5"/>
-                        <path d="M 85,60 Q 100,63 112,58" fill="none" stroke="#F3D17E" stroke-width="1.5"/>
-                        <path d="M 83,64 Q 100,67 114,62" fill="none" stroke="#F3D17E" stroke-width="1.5"/>
-                        
-                        <path d="M15,85 C 50,95 150,95 185,85 C 170,105 30,105 15,85 Z" fill="#C5A059" opacity="0.3"/>
-                        <path d="M 10,85 Q 100,105 190,85" fill="none" stroke="#F3D17E" stroke-width="2.5"/>
-                        <path d="M 190,85 Q 198,75 195,65 Q 188,72 182,82" fill="none" stroke="#F3D17E" stroke-width="2"/>
-                        <path d="M 10,85 Q 2,78 5,70 Q 10,75 14,82" fill="none" stroke="#F3D17E" stroke-width="2"/>
-                        <path d="M 30,100 Q 50,105 70,100 M 110,100 Q 130,105 150,100" fill="none" stroke="#C5A059" stroke-width="1"/>
+                <div class="svg-core-container">
+                    <svg viewBox="0 0 400 240" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="goldTextGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                <stop offset="0%" stop-color="#FFFFFF" />
+                                <stop offset="35%" stop-color="#FFF2B2" />
+                                <stop offset="70%" stop-color="#E5BA6E" />
+                                <stop offset="100%" stop-color="#9E773B" />
+                            </linearGradient>
+                            <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+                                <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+                            </filter>
+                        </defs>
+
+                        <g transform="translate(100, 15)">
+                            <polygon points="100,15 65,70 135,70" fill="none" stroke="#C9A55C" stroke-width="1.5" stroke-dasharray="2,2" opacity="0.6"/>
+                            <polygon points="100,22 73,72 122,77" fill="#16263D" stroke="#F6D785" stroke-width="2"/>
+                            <line x1="100" y1="22" x2="96" y2="74" stroke="#F6D785" stroke-width="1.5"/>
+                            <path d="M 87,51 Q 100,54 110,49" fill="none" stroke="#F6D785" stroke-width="1.5"/>
+                            <path d="M 85,55 Q 100,58 111,53" fill="none" stroke="#F6D785" stroke-width="1.5"/>
+                            
+                            <path d="M15,75 C 50,83 150,83 185,75 C 170,93 30,93 15,75 Z" fill="#C9A55C" opacity="0.25"/>
+                            <path d="M 10,75 Q 100,93 190,75" fill="none" stroke="#F6D785" stroke-width="2.5"/>
+                            <path d="M 190,75 Q 197,66 194,57 Q 188,63 183,72" fill="none" stroke="#F6D785" stroke-width="2"/>
+                            <path d="M 10,75 Q 3,69 5,62 Q 10,66 14,72" fill="none" stroke="#F6D785" stroke-width="2"/>
+                            <path d="M 35,88 Q 50,92 65,88 M 135,88 Q 150,92 165,88" fill="none" stroke="#C9A55C" stroke-width="1"/>
+                        </g>
+
+                        <text x="200" y="185" 
+                              font-family="'Noto Serif TC', 'Noto Serif CJK TC', serif" 
+                              font-weight="900" 
+                              font-size="46" 
+                              fill="url(#goldTextGradient)" 
+                              text-anchor="middle" 
+                              letter-spacing="12"
+                              filter="url(#shadow)"
+                              id="target-title">端午安康</text>
                     </svg>
                 </div>
-                <div class="display-title" id="target-title">端午安康</div>
             </div>
 
             <div class="footer-section">
@@ -319,29 +326,45 @@
 
         // 即時預覽同步
         inputs.recipient.addEventListener('input', (e) => targets.recipient.innerText = e.target.value);
-        inputs.title.addEventListener('input', (e) => targets.title.innerText = e.target.value);
         inputs.sender.addEventListener('input', (e) => targets.sender.innerText = e.target.value);
         inputs.logoText.addEventListener('input', (e) => targets.logoText.innerText = e.target.value);
         inputs.subtitle.addEventListener('input', (e) => {
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
+        });
+        
+        // 同步主標題 (處理 SVG text)
+        inputs.title.addEventListener('input', (e) => {
+            targets.title.textContent = e.target.value;
         });
 
         // 高清圖片導出功能
         function downloadPoster() {
             const poster = document.getElementById('poster-canvas');
             
-            // 使用 html2canvas 將 DOM 轉換為高清圖片
+            // 下載時顯示提示，防呆處理
+            const btn = document.querySelector('.btn-download');
+            btn.innerText = "⏳ 圖片生成中...";
+            btn.disabled = true;
+
             html2canvas(poster, {
-                scale: 2, // 放大兩倍確保導出文字與線條極度清晰不模糊
+                scale: 2, // 放大兩倍輸出，確保高清
                 useCORS: true,
-                backgroundColor: null
+                backgroundColor: null,
+                logging: false
             }).then(canvas => {
                 const link = document.createElement('a');
-                // 依據主標題自動命名
                 const fileName = inputs.title.value.trim() || '端午祝賀';
                 link.download = `${fileName}_賀圖.png`;
                 link.href = canvas.toDataURL('image/png');
                 link.click();
+                
+                // 還原按鈕狀態
+                btn.innerText = "💾 下載 PNG 圖片";
+                btn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                btn.innerText = "❌ 發生錯誤，請重試";
+                btn.disabled = false;
             });
         }
     </script>
