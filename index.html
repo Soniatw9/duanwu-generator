@@ -2,7 +2,7 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Dragon Boat Festival Card Generator</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght=600;900&family=Noto+Sans+TC:wght=400;500&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -30,7 +30,7 @@
             overflow: hidden;
         }
 
-        /* 左側控制欄 - 桌機端預設 */
+        /* 左側控制欄 */
         .sidebar {
             width: 360px;
             min-width: 360px;
@@ -84,7 +84,7 @@
             box-shadow: 0 0 8px rgba(243, 209, 126, 0.3);
         }
 
-        /* 龍舟船樣式選擇區 */
+        /* 龍舟選擇 */
         .boat-selector-section {
             display: flex;
             flex-direction: column;
@@ -149,12 +149,7 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
-        .btn-download:hover {
-            opacity: 0.9;
-            transform: translateY(-1px);
-        }
-
-        /* 右側預覽區 - 桌機端預設 */
+        /* 右側預覽區 */
         .preview-container {
             flex: 1;
             display: flex;
@@ -165,7 +160,6 @@
             overflow: auto;
         }
 
-        /* 賀圖畫布 - 外層包裹容器用來支援手機縮放 */
         .canvas-wrapper {
             width: 600px;
             max-width: 100%;
@@ -174,11 +168,10 @@
             align-items: center;
         }
 
-        /* 賀圖畫布本體 - 1:1 黃金比例 */
+        /* 畫布本體 - 嚴格 1:1 分配 */
         #poster-canvas {
             width: 600px;
             height: 600px;
-            /* 讓畫布在小螢幕時等比例縮放，避免被切到 */
             aspect-ratio: 1 / 1;
             background: radial-gradient(circle at center, #122846 0%, #061224 100%);
             border: 12px double var(--gold-dark);
@@ -188,13 +181,12 @@
             flex-direction: column;
             justify-content: space-between;
             align-items: center;
-            padding: 55px 45px;
+            padding: 50px 40px;
             overflow: hidden;
             box-sizing: border-box;
             flex-shrink: 0;
         }
 
-        /* 內框裝飾細線 */
         #poster-canvas::before {
             content: "";
             position: absolute;
@@ -203,7 +195,6 @@
             pointer-events: none;
         }
 
-        /* 上部結構：收件人與副標題 */
         .header-section {
             text-align: center;
             width: 100%;
@@ -214,7 +205,7 @@
             font-family: 'Noto Sans TC', sans-serif;
             font-size: 1.25rem;
             color: var(--gold-light);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             letter-spacing: 2px;
             font-weight: 500;
         }
@@ -222,13 +213,12 @@
         .display-subtitle {
             font-size: 1.05rem;
             color: #BACADF;
-            letter-spacing: 4px;
-            line-height: 1.7;
-            max-width: 85%;
+            letter-spacing: 3px;
+            line-height: 1.6;
+            max-width: 90%;
             margin: 0 auto;
         }
 
-        /* 中部結構 */
         .middle-section {
             display: flex;
             flex-direction: column;
@@ -239,23 +229,20 @@
         }
 
         .svg-core-container {
-            width: 420px;
-            height: 200px;
+            width: 100%;
+            height: 180px;
             display: flex;
             justify-content: center;
             align-items: center;
-            max-width: 100%;
         }
 
-        /* 龍舟圖片與光暈濾鏡 */
         #dynamic-dragon-boat {
             width: 100%;
-            max-width: 320px;
+            max-width: 290px;
             height: auto;
             filter: drop-shadow(0 0 12px rgba(246, 215, 133, 0.85));
         }
 
-        /* 龍舟下方的大字樣式 */
         .display-main-title {
             font-family: 'Noto Serif TC', serif;
             font-size: 2.8rem;
@@ -268,7 +255,6 @@
             text-align: center;
         }
 
-        /* 底部落款與Logo宣告文字 */
         .footer-section {
             text-align: center;
             width: 100%;
@@ -276,7 +262,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
         }
 
         .display-sender {
@@ -290,10 +276,9 @@
             color: rgba(186, 202, 223, 0.6);
             letter-spacing: 1.5px; 
             text-transform: uppercase; 
-            line-height: 1.5; 
+            line-height: 1.4; 
         }
 
-        /* 傳統祥雲背景裝飾 */
         .cloud {
             position: absolute;
             opacity: 0.12;
@@ -302,56 +287,107 @@
         .cloud-left { top: 35%; left: 25px; width: 90px; }
         .cloud-right { top: 32%; right: 25px; width: 90px; transform: scaleX(-1); }
 
-        /* FortVax Logo */
         #company-logo {
             position: absolute; 
-            bottom: 25px;       
-            right: 25px;        
-            width: 75px;       
+            bottom: 22px;       
+            right: 22px;        
+            width: 70px;       
             height: auto;       
             z-index: 10;        
             opacity: 0.85;       
         }
 
-        /* 📱 關鍵修改：RWD 手機端專用響應式樣式優化 (螢幕寬度小於 768px 時自動觸發) */
+        /* 📱 手機版 RWD 彈性高度優化，解決塞不下的問題 */
         @media (max-width: 768px) {
             body {
-                flex-direction: column; /* 左右排列改為上下排列 */
-                height: auto;
-                overflow-y: auto; /* 放開滾動條限制 */
+                flex-direction: column;
+                height: 100vh;
+                overflow: hidden;
             }
 
             .sidebar {
                 width: 100%;
                 min-width: 100%;
-                height: auto;
+                flex: 1; /* 上半部表單佔 50% */
+                height: 50vh;
                 border-right: none;
-                border-bottom: 1px solid rgba(197, 160, 89, 0.3);
-                padding: 20px;
+                border-bottom: 2px solid rgba(197, 160, 89, 0.3);
+                padding: 15px;
+                gap: 15px;
             }
+
+            .sidebar h2 { font-size: 1.1rem; padding-bottom: 5px; }
+            .input-group { gap: 4px; }
+            .input-group input, .input-group textarea { padding: 8px; font-size: 0.9rem; }
 
             .preview-container {
                 width: 100%;
-                padding: 15px;
-                box-sizing: border-box;
+                flex: 1; /* 下半部預覽區佔 50% */
+                height: 50vh;
+                padding: 10px;
                 background-color: #03070d;
-                justify-content: center;
+                overflow: auto; /* 允許獨立滾動不影響表單 */
+                align-items: center;
             }
 
             .canvas-wrapper {
                 width: 100%;
-                overflow: hidden;
                 display: flex;
                 justify-content: center;
+                align-items: center;
             }
 
-            /* 手機版智慧縮放機制：利用 CSS transform 的方式縮放，確保產生器匯出成圖片時不會變形或失真 */
             #poster-canvas {
                 width: 600px !important;
                 height: 600px !important;
-                transform-origin: top center;
-                /* 預留一些手機版字體可能因尺寸縮小而調整的彈性 */
+                transform-origin: center center;
             }
+        }
+
+        /* 📥 手機端長按儲存彈出視窗（燈箱） */
+        .mobile-share-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(5, 11, 20, 0.95);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .mobile-share-overlay.active {
+            opacity: 1; pointer-events: auto;
+        }
+        .mobile-share-tip {
+            color: var(--gold-light);
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 500;
+            animation: pulse 1.5s infinite;
+        }
+        .mobile-share-image {
+            max-width: 100%;
+            max-height: 70vh;
+            border: 4px solid var(--gold-dark);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+        }
+        .mobile-share-close {
+            margin-top: 20px;
+            background: #16263D;
+            border: 1px solid var(--gold-dark);
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
         }
     </style>
 </head>
@@ -442,6 +478,12 @@
         </div>
     </div>
 
+    <div class="mobile-share-overlay" id="mobileOverlay">
+        <div class="mobile-share-tip">💡 賀圖已生成！請「長按圖片」選擇儲存至相簿</div>
+        <img class="mobile-share-image" id="mobileGeneratedImg" src="" alt="Generated Card">
+        <button class="mobile-share-close" onclick="closeOverlay()">返回修改</button>
+    </div>
+
     <script>
         const inputs = {
             recipient: document.getElementById('input-recipient'),
@@ -467,13 +509,11 @@
         inputs.subtitle.addEventListener('input', (e) => {
             targets.subtitle.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
-        
-        /* 同步底部雙行宣言 */
         inputs.logoText.addEventListener('input', (e) => {
             targets.logoText.innerHTML = e.target.value.replace(/\n/g, '<br>');
         });
         
-        /* 龍舟船樣式選擇邏輯 */
+        /* 龍舟選擇 */
         const boatOptions = document.querySelectorAll('.boat-option');
         boatOptions.forEach(option => {
             option.addEventListener('click', () => {
@@ -484,63 +524,81 @@
             });
         });
 
-        /* 📱 手機端動態縮放畫布核心邏輯 */
+        /* 手機端動態等比例縮放畫布 */
         function handleMobileScale() {
             const wrapper = document.getElementById('canvas-scaler-box');
             const canvas = document.getElementById('poster-canvas');
             if (window.innerWidth <= 768) {
                 const availableWidth = wrapper.offsetWidth;
-                const scaleFactor = availableWidth / 600; // 計算螢幕寬度與畫布 600px 的比例
+                const scaleFactor = availableWidth / 600; 
                 canvas.style.transform = `scale(${scaleFactor})`;
-                wrapper.style.height = `${600 * scaleFactor}px`; // 動態修正外層容器高度，防止下方留白過多
             } else {
                 canvas.style.transform = 'none';
-                wrapper.style.height = 'auto';
             }
         }
         window.addEventListener('resize', handleMobileScale);
         window.addEventListener('DOMContentLoaded', handleMobileScale);
-        // 當圖片或字體加載完成後再次校正縮放
         window.addEventListener('load', handleMobileScale);
 
-        /* 高清圖片導出功能 */
+        function closeOverlay() {
+            document.getElementById('mobileOverlay').classList.remove('active');
+        }
+
+        /* 匯出下載功能大改版 */
         function downloadPoster() {
             const poster = document.getElementById('poster-canvas');
             const btn = document.querySelector('.btn-download');
             btn.innerText = "⏳ Generating Image...";
             btn.disabled = true;
 
-            // 在產生圖片前，先把手機版的 transform 縮放效果暫時移除，避免 html2canvas 裁切不準
+            // 確保匯出時無縮放變形
             const currentTransform = poster.style.transform;
             poster.style.transform = 'none';
 
-            html2canvas(poster, {
-                scale: 2, 
-                useCORS: true,
-                backgroundColor: null,
-                logging: false
-            }).then(canvas => {
-                // 產生完成後還原手機版的縮放外觀
-                if (window.innerWidth <= 768) {
-                    handleMobileScale();
-                } else {
-                    poster.style.transform = currentTransform;
-                }
+            // 稍微延遲讓 DOM 渲染完全，保障 html2canvas 擷取精準
+            setTimeout(() => {
+                html2canvas(poster, {
+                    scale: 2, 
+                    useCORS: true,
+                    backgroundColor: null,
+                    logging: false
+                }).then(canvas => {
+                    // 還原縮放
+                    if (window.innerWidth <= 768) {
+                        handleMobileScale();
+                    } else {
+                        poster.style.transform = currentTransform;
+                    }
 
-                const link = document.createElement('a');
-                const senderName = inputs.sender.value.split(' ')[1] || inputs.sender.value.split(' ')[0] || 'FortVax';
-                link.download = `${senderName}_Card.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-                
-                btn.innerText = "💾 Download PNG";
-                btn.disabled = false;
-            }).catch(err => {
-                console.error(err);
-                if (window.innerWidth <= 768) handleMobileScale();
-                btn.innerText = "❌ Error, please try again";
-                btn.disabled = false;
-            });
+                    const imgData = canvas.toDataURL('image/png');
+                    const senderName = inputs.sender.value.split(' ')[1] || inputs.sender.value.split(' ')[0] || 'FortVax';
+
+                    // 判斷是否為手機端 (或者是 LINE / 微信等內建瀏覽器)
+                    const isMobile = window.innerWidth <= 768 || /Android|iPhone|iPad|iPod|LINE/i.test(navigator.userAgent);
+
+                    if (isMobile) {
+                        // 手機端：跳出長按存圖燈箱
+                        const overlay = document.getElementById('mobileOverlay');
+                        const mobileImg = document.getElementById('mobileGeneratedImg');
+                        mobileImg.src = imgData;
+                        overlay.classList.add('active');
+                    } else {
+                        // 電腦端：直接下載
+                        const link = document.createElement('a');
+                        link.download = `${senderName}_Card.png`;
+                        link.href = imgData;
+                        link.click();
+                    }
+                    
+                    btn.innerText = "💾 Download PNG";
+                    btn.disabled = false;
+                }).catch(err => {
+                    console.error(err);
+                    if (window.innerWidth <= 768) handleMobileScale();
+                    btn.innerText = "❌ Error, please try again";
+                    btn.disabled = false;
+                });
+            }, 100);
         }
     </script>
 </body>
